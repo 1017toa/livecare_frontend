@@ -10,6 +10,6 @@ const config = {
   },
 };
 
-const environment = process.env.REACT_APP_ENV || 'development';
+const environment = process.env.REACT_APP_ENV || 'production';
 
 export const BASE_URL = config[environment].apiUrl;
