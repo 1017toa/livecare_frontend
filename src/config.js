@@ -6,7 +6,7 @@ const config = {
     apiUrl: 'http://test-server.com/api', // 테스트 서버 URL
   },
   production: {
-    apiUrl: 'https://livecare-backend.azurewebsites.net', // 실제 배포 서버 URL
+    apiUrl: 'https://livecare-backend.azurewebsites.net:8000', // 실제 배포 서버 URL
   },
 };
 
