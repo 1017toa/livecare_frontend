@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { extractPrescriptionData } from '../api';
 
-const imageExtensions = ['.jpeg', '.jpg', '.png', '.bmp', '.pdf', '.tiff', '.heic'];
+// const imageExtensions = ['.jpeg', '.jpg', '.png', '.bmp', '.pdf', '.tiff', '.heic'];
 
 function useFileUpload(setPrescriptionImages) {
   const [extractedPrescriptionData, setExtractedPrescriptionData] = useState(null);

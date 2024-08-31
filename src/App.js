@@ -26,7 +26,7 @@ function App() {
   const { 
     handleDrop, 
     extractedPrescriptionData, 
-    handlePrescriptionExtraction 
+    // handlePrescriptionExtraction 제거
   } = useFileUpload(setPrescriptionImages);
 
   const { 
@@ -49,7 +49,7 @@ function App() {
     if (extractedPrescriptionData) {
       updateFormWithExtractedData(extractedPrescriptionData);
     }
-  }, [extractedPrescriptionData]);
+  }, [extractedPrescriptionData, updateFormWithExtractedData]);
 
   const handleStartProcessing = async () => {
     setIsUploading(true);
