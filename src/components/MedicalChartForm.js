@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
-import useMedicalChartData from '../hooks/useMedicalChartData';
 
-function MedicalChartForm({ initialData }) {
-  const { medicalChartData, handleMedicalChartChange, handleMedicalChartSubmit } = useMedicalChartData(initialData);
-
+function MedicalChartForm({ initialData, medicalChartData, handleMedicalChartChange, handleMedicalChartSubmit, textareaRef, textareaHeight }) {
   useEffect(() => {
     console.log('초기 데이터:', initialData);
     console.log('현재 차트 데이터:', medicalChartData);
@@ -16,14 +13,16 @@ function MedicalChartForm({ initialData }) {
         <div className="form-group">
           <label htmlFor="medicalChart">진료 차트</label>
           <textarea
+            ref={textareaRef}
             id="medicalChart"
             name="medicalChart"
             value={medicalChartData.content}
             onChange={handleMedicalChartChange}
             style={{
               width: '100%',
-              minHeight: '150px',
-              resize: 'vertical',
+              height: textareaHeight,
+              resize: 'none',
+              overflow: 'hidden',
               padding: '10px',
               border: '1px solid #ccc',
               borderRadius: '4px',
@@ -34,7 +33,7 @@ function MedicalChartForm({ initialData }) {
             }}
           />
         </div>
-        <button type="submit" className="submit-button">진료 차트 저장</button>
+        {/* <button type="submit" className="submit-button">진료 차트 저장</button> */}
       </form>
     </section>
   );

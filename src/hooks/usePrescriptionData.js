@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { submitPrescriptionData } from '../api';
 
 function usePrescriptionData() {
@@ -67,30 +67,6 @@ function usePrescriptionData() {
     }
   };
 
-  const updateFormWithExtractedData = useCallback((extractedData) => {
-    if (extractedData) {
-      const transformedMedications = extractedData.medication_name.map(name => ({
-        name,
-        dosage: extractedData.medication_dosage[name] || ''
-      }));
-
-      console.log('Transformed medications:', transformedMedications); // 디버깅용 로그
-
-      setPatientData(prevData => {
-        const newData = {
-          ...prevData,
-          id: extractedData.id || '',
-          Name: extractedData.Name || '',
-          age: extractedData.age || '',
-          prescription_date: extractedData.prescription_date || '',
-          prescription_days: extractedData.prescription_days || '',
-          medications_dosage: transformedMedications.length > 0 ? transformedMedications : [{ name: '', dosage: '' }]
-        };
-        console.log('New patient data:', newData); // 디버깅용 로그
-        return newData;
-      });
-    }
-  }, []);
 
   return { 
     patientData, 
@@ -99,7 +75,6 @@ function usePrescriptionData() {
     handleSubmit, 
     addMedication, 
     removeMedication,
-    updateFormWithExtractedData 
   };
 }
 

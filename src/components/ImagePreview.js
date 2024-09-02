@@ -42,10 +42,10 @@ function ImagePreview({ images = [], onDeleteImage }) {
       <div className="image-container">
         {images.length > 0 ? (
           images.map((image, index) => (
-            <div key={image.url} className="image-preview-item">
+            <div key={index} className="image-preview-item">
               <img 
                 ref={el => imageRefs.current[index] = el}
-                src={image.url} 
+                src={image.url} // 수정된 부분
                 alt={`업로드된 이미지 미리보기 ${index + 1}`} 
                 className="responsive-image"
               />
@@ -56,7 +56,7 @@ function ImagePreview({ images = [], onDeleteImage }) {
               >
                 ×
               </button>
-              <p className="image-filename">{image.file.name}</p>
+              <p className="image-filename">{image.file.name || `sample_image_${index + 1}`}</p> {/* 수정된 부분 */}
             </div>
           ))
         ) : (

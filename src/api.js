@@ -1,4 +1,4 @@
-import { startLoading, stopLoading } from './loading';
+import { startLoading, stopLoading, initializeLoading } from './loading';
 import { BASE_URL } from './config';
 import { convertImagesToPDF } from './utils/pdfUtils';
 
@@ -25,9 +25,10 @@ export const savePatientData = async (patientData) => {
 };
 
 // 여러 처방전 이미지를 서버로 전송하고 데이터를 추출하는 함수
-export async function extractPrescriptionData(imageFiles) {
+export async function extractPrescriptionData(imageFiles, loadingElement) {
   try {
-    startLoading();
+    initializeLoading(loadingElement);
+    startLoading(loadingElement, 'report');
     
     // PDF 변환 시작 시간 기록
     const startTime = performance.now();
@@ -61,20 +62,22 @@ export async function extractPrescriptionData(imageFiles) {
     // 응답 데이터를 JSON으로 파싱
     const data = await response.json();
 
-    stopLoading();
+    stopLoading(loadingElement, 'report');
     // 추출된 데이터 반환
     return data;
   } catch (error) {
     console.error('처방전 데이터 추출 중 오류:', error);
-    stopLoading();
+    stopLoading(loadingElement, 'report');
     throw error;
   }
 }
 
 // 오디오 파일을 서버에 업로드하고 의료 차트를 텍스트로 변환하는 함수
-export const uploadAudioAndCreateMedicalChart = async (audioFile) => {
+export const uploadAudioAndCreateMedicalChart = async (audioFile, loadingElement) => {
   try {
-    startLoading();
+    initializeLoading(loadingElement);
+    startLoading(loadingElement, 'voice');
+
     const formData = new FormData();
     formData.append('file', audioFile);
 
@@ -89,11 +92,12 @@ export const uploadAudioAndCreateMedicalChart = async (audioFile) => {
 
     const data = await response.json();
     console.log('오디오 변환 성공:', data);
-    stopLoading();
+
+    stopLoading(loadingElement, 'voice');
     return data; // { id: chart_id, content: result } 형식으로 반환
   } catch (error) {
     console.error('오디오 파일 처리 중 오류 발생:', error);
-    stopLoading();
+    stopLoading(loadingElement, 'voice');
     throw error;
   }
 };
