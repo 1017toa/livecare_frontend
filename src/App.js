@@ -58,6 +58,15 @@ function App() {
     }
   }, [medicalChartData]);
 
+  useEffect(() => {
+    if (loadingElementRef.current) {
+      loadingElementRef.current.style.display = 'none'; // 로딩 요소 숨기기
+    }
+    if (voiceLoadingElementRef.current) {
+      voiceLoadingElementRef.current.style.display = 'none'; // 음성 탭 로딩 요소 숨기기
+    }
+  }, []);
+
   const handleSampleTest = async () => {
     const sampleImageUrls = [
       process.env.PUBLIC_URL + '/sample/sample_medicine_bag1.jpg',
@@ -82,6 +91,9 @@ function App() {
   };
 
   const handleStartProcessing = async (images = prescriptionImages) => {
+    if (loadingElementRef.current) {
+      loadingElementRef.current.style.display = 'block'; // 로딩 요소 표시
+    }
     setIsUploading(true);
     try {
       const result = await handlePrescriptionExtraction(images || [], loadingElementRef.current); // 수정된 부분
@@ -92,6 +104,9 @@ function App() {
       console.error('처방전 데이터 추출 중 오류 발생:', error);
     } finally {
       setIsUploading(false);
+      if (loadingElementRef.current) {
+        loadingElementRef.current.style.display = 'none'; // 로딩 요소 숨기기
+      }
     }
   };
 
@@ -117,20 +132,31 @@ function App() {
   };
 
   const handleSampleAudioTest = async () => {
+    if (voiceLoadingElementRef.current) {
+      voiceLoadingElementRef.current.style.display = 'block'; // 음성 탭 로딩 요소 표시
+    }
     const sampleAudioUrl = process.env.PUBLIC_URL + '/sample/sample_audio.aac';
     const response = await fetch(sampleAudioUrl);
     const blob = await response.blob();
     const sampleAudio = new File([blob], 'sample_audio.aac', { type: blob.type });
 
-    await handleAudioDrop([sampleAudio], voiceLoadingElementRef.current); // 로딩 요소 전달
+    try {
+      await handleAudioDrop([sampleAudio], voiceLoadingElementRef.current); // 로딩 요소 전달
+    } catch (error) {
+      console.error('오디오 데이터 처리 중 오류 발생:', error);
+    } finally {
+      if (voiceLoadingElementRef.current) {
+        voiceLoadingElementRef.current.style.display = 'none'; // 음성 탭 로딩 요소 숨기기
+      }
+    }
   };
 
   return (
     <div className="app-container">
       <div className="main-content">
-        <header>
-          <h1>LiveCare로 환자 정보를 스마트하게 관리하세요</h1>
-          <p>인공지능 기술로 약봉투 정보와 진료 녹음을 빠르고 정확하게 디지털화합니다.</p>
+        <header className="app-header">
+          <h2>Live<span className="danger">Care</span></h2>
+          <span className="assistant-text">방문 진료 어시스턴트</span> {/* 추가된 부분 */}
         </header>
 
         <main>
